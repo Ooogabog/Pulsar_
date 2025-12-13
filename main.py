@@ -1,6 +1,7 @@
 import pygame
 import random
 pygame.init()
+pygame.font.init()
 
 # now set up the game window
 width = 800
