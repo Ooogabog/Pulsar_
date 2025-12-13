@@ -3,11 +3,16 @@ import random
 pygame.init()
 pygame.font.init()
 
+#clock for time frames
+clock = pygame.time.Clock()
+FPS = 60
+
 # now set up the game window
 width = 800
 height = 600
 window = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Pulsar")
+
 # set the background
 def backgrounds(name):
     image = pygame.image.load("black.png")
@@ -46,12 +51,10 @@ class Asteriod:
         self.rect = rect
         self.scored = False
 
-#clock for time frames
-clock = pygame.time.Clock()
 
-menu = True
 font = pygame.font.Font(None, 36)
 
+menu = True
 while menu:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -69,13 +72,14 @@ while menu:
     window.blit(title,title_rect)
     window.blit(instructions,instructions_rect)
     pygame.display.update()
-    clock.tick(60)
 
+    clock.tick(FPS)
 
 #game main loop
 running = True
 gameover = False
 score = 0
+gameover_timer = 0
 
 while running:
     for event in pygame.event.get():
@@ -84,7 +88,7 @@ while running:
     draw(window,background,bg_image)
 
     if not gameover:
-
+        #spaceship movement
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             spaceship_rect.x -= spaceship_speed
@@ -116,18 +120,19 @@ while running:
         window.blit(spaceship_img, spaceship_rect)
         for a in asteroids:
             window.blit(asteroid_img, a.rect)
-        pygame.display.update()
-        clock.tick(60)
 
     else:
+        gameover_timer += 1
         font = pygame.font.Font(None,36)
         gameovertext = font.render("GAME OVER",True,(255,0,0))
         scoretext = font.render(f"Score: {score}", True, (255,0,0))
         window.blit(gameovertext, (width//2-80,height//2-10))
         window.blit(scoretext, (width//2-50, height//2+10))
-        pygame.display.update()
-        pygame.time.wait(2000)
-        running = False
+        if gameover_timer > FPS *2:
+            running = False
+    pygame.display.update()
+    pygame.display.update()
+    clock.tick(FPS)
 
 
 
