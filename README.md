@@ -24,7 +24,7 @@ Pygame library
 pip install pygame
 
 2.Clone the repository:
-git clone https://github.com/Ooogabog/Pulsar_
+git clone https://github.com/Ooogabog/Pulsar_.git
 
 3.Navigate to the project folder:
 cd pulsar
