@@ -14,15 +14,17 @@ Your score increases every time an asteroid passes you
 The game ends when your spaceship collides with an asteroid
 
 🖥️ Requirements
+
 Python 3.9+
 Pygame library
 
 ▶️ How to Run
+
 1.Install Pygame using:
 pip install pygame
 
 2.Clone the repository:
-git clone https://github.com/your-username/pulsar.git
+git clone https://github.com/Ooogabog/Pulsar_
 
 3.Navigate to the project folder:
 cd pulsar
@@ -54,6 +56,9 @@ Ensure filenames match exactly (case-sensitive)
 Images not loading?
 
 Confirm these files exist:
+
 black.png
+
 spaceships.png
+
 asteroid.png
