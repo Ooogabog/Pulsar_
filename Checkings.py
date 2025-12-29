@@ -1,10 +1,6 @@
 import pygame
 pygame.init()
-window = pygame.display.set_mode((800, 600))
-
-num = 2
-num = num +1
-print(num)
+window = pygame.display.set_mode((800, 600)
 
 run = True
 
