@@ -108,7 +108,11 @@ while running:
         for a in asteroids:
             a.rect.y += asteroid_speed
             if a.rect.colliderect(spaceship_rect):
-                gameover = True
+                 lives -= 1
+                asteroids.remove(a)
+
+                if lives <= 0:
+                    gameover = True
                 #score if passed
             if a.rect.y> spaceship_rect.bottom and not a.scored:
                 a.scored = True
@@ -120,6 +124,9 @@ while running:
         window.blit(spaceship_img, spaceship_rect)
         for a in asteroids:
             window.blit(asteroid_img, a.rect)
+        lives_text = font.render(f"Lives : {lives}", True , (255,0,0))
+        lives_rect = lives_text.get_rect(topright = (width-10 , 10))
+        window.blit(lives_text , lives_rect)
 
     else:
         gameover_timer += 1
