@@ -51,6 +51,14 @@ class Asteriod:
         self.rect = rect
         self.scored = False
 
+lasers = []
+laser_speed = 10
+laser_radius = 6
+laser_cooldown  = 300
+last_laser_time = 0
+LASER_COLOR = (255, 255, 0)
+
+
 
 font = pygame.font.Font(None, 36)
 
@@ -96,29 +104,53 @@ while running:
             spaceship_rect.x -= spaceship_speed
         if keys[pygame.K_RIGHT]:
                 spaceship_rect.x += spaceship_speed
+        spaceship_rect.x = max(0, min(width - spaceship_rect.width, spaceship_rect.x))
 
             # spawning new asteriods
         now = pygame.time.get_ticks()
+        if keys[pygame.K_SPACE] and now - last_laser_time > laser_cooldown:
+            last_laser_time = now
+            laser_rect = pygame.Rect(
+                spaceship_rect.centerx - laser_radius,
+                spaceship_rect.top - laser_radius,
+                laser_radius * 2,
+                laser_radius * 2
+            )
+            lasers.append(laser_rect)
         if now-last_spawn > spawn_delay:
             last_spawn = now
             rect = asteroid_img.get_rect()
             rect.x = random.randint(0,width-rect.width)
             rect.y = -rect.height
             asteroids.append(Asteriod(rect))
+            
+        for laser in lasers:
+            laser.y -= laser_speed
+
+        lasers = [laser for laser in lasers if laser.bottom> 0]
+
 
             #asteroid collision and movement
         for a in asteroids:
             a.rect.y += asteroid_speed
+
+            if a.rect.top > spaceship_rect.bottom and not a.scored:
+                a.scored = True
+                score += 1
             if a.rect.colliderect(spaceship_rect):
-                 lives -= 1
+                lives -= 1
                 asteroids.remove(a)
 
                 if lives <= 0:
                     gameover = True
-                #score if passed
-            if a.rect.y> spaceship_rect.bottom and not a.scored:
-                a.scored = True
-                score += 1
+                continue
+
+            for laser in lasers[:]:
+                if a.rect.colliderect(laser):
+                    asteroids.remove(a)
+                    lasers.remove(laser)
+                    score = +1
+                    break
             # remove offscreen asteriods
         asteroids = [a for a in asteroids if a.rect.y<height]
 
@@ -126,6 +158,9 @@ while running:
         window.blit(spaceship_img, spaceship_rect)
         for a in asteroids:
             window.blit(asteroid_img, a.rect)
+        for laser in lasers:
+            pygame.draw.circle(window, LASER_COLOR,laser.center,laser_radius)
+
         lives_text = font.render(f"Lives : {lives}", True , (255,0,0))
         lives_rect = lives_text.get_rect(topright = (width-10 , 10))
         window.blit(lives_text , lives_rect)
