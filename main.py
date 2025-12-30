@@ -88,6 +88,8 @@ while running:
     draw(window,background,bg_image)
 
     if not gameover:
+        asteroid_speed = 6 + score//5
+        spawn_delay = max(300, 800 - score*10)
         #spaceship movement
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
@@ -127,6 +129,10 @@ while running:
         lives_text = font.render(f"Lives : {lives}", True , (255,0,0))
         lives_rect = lives_text.get_rect(topright = (width-10 , 10))
         window.blit(lives_text , lives_rect)
+        score_text = font.render(f"score : {score}", True , (255,0,0))
+        score_rect = score_text.get_rect(topleft = (10,10))
+        window.blit(score_text , score_rect)
+
 
     else:
         gameover_timer += 1
